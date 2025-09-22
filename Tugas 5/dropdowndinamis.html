@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Dropdown Dinamis Barang</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+    }
+    .form-container {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 350px;
+    }
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+    }
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+    #output {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #e9e9e9;
+        border-radius: 4px;
+    }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Dropdown Dinamis Barang</h2>
+    <label for="kategori">Kategori Barang:</label>
+    <select id="kategori">
+        <option value="">Pilih Kategori</option>
+    </select>
+
+    <label for="merek">Merek:</label>
+    <select id="merek" disabled>
+        <option value="">Pilih Merek</option>
+    </select>
+
+    <div id="output"></div>
+</div>
+
+<script>
+    // Data kategori dan merek
+    const dataBarang = {
+        "HP": ["Samsung", "Xiaomi", "Oppo", "Vivo", "iPhone"],
+        "Laptop": ["Dell", "HP", "Asus", "Acer", "Lenovo", "MacBook"],
+        "TV": ["Samsung", "LG", "Sony", "Panasonic", "Toshiba"]
+    };
+
+    const kategoriSelect = document.getElementById("kategori");
+    const merekSelect = document.getElementById("merek");
+    const outputDiv = document.getElementById("output");
+
+    // Populate dropdown kategori
+    Object.keys(dataBarang).forEach(kategori => {
+        const option = document.createElement("option");
+        option.value = kategori;
+        option.textContent = kategori;
+        kategoriSelect.appendChild(option);
+    });
+
+    // Event ketika kategori berubah
+    kategoriSelect.addEventListener("change", function() {
+        const kategori = this.value;
+        merekSelect.innerHTML = `<option value="">Pilih Merek</option>`;
+        outputDiv.innerHTML = "";
+
+        if(kategori) {
+            dataBarang[kategori].forEach(merek => {
+                const option = document.createElement("option");
+                option.value = merek;
+                option.textContent = merek;
+                merekSelect.appendChild(option);
+            });
+            merekSelect.disabled = false;
+        } else {
+            merekSelect.disabled = true;
+        }
+    });
+
+    // Event ketika merek dipilih
+    merekSelect.addEventListener("change", function() {
+        const kategori = kategoriSelect.value;
+        const merek = this.value;
+        if(merek) {
+            outputDiv.innerHTML = `<strong>Kategori:</strong> ${kategori} <br> <strong>Merek:</strong> ${merek}`;
+        } else {
+            outputDiv.innerHTML = "";
+        }
+    });
+</script>
+
+</body>
+</html>
